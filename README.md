@@ -1,4 +1,4 @@
-# Crimes-Against-Women-in-India-2001-2021-
+
 <div align="center">
       <H1> Crimes-Against-Women-in-India-2001-2021-</H1>
 <H2>
@@ -57,4 +57,54 @@ plt.xlabel('Year')
 plt.ylabel('State')
 plt.show()
 ```
-![image]()
+![image](https://github.com/Arif-miad/Crimes-Against-Women-in-India-2001-2021-/blob/main/crime.png)
+
+```python
+# Group by year and sum up all crime types
+crime_trend = crimes_df_cleaned.groupby('Year').sum()
+
+# Plotting the trend of different crimes over the years
+plt.figure(figsize=(12, 6))
+sns.lineplot(data=crime_trend)
+plt.title('Trend of Crimes Against Women (2001-2021)')
+plt.xlabel('Year')
+plt.ylabel('Number of Crimes')
+plt.xticks(rotation=45)
+plt.legend(title='Crime Type', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.show()
+```
+![image](https://github.com/Arif-miad/Crimes-Against-Women-in-India-2001-2021-/blob/main/crime2.png)
+```python
+plt.figure(figsize=(12, 8))
+correlation_matrix = crimes_df_cleaned.drop(['State'], axis=1).corr()
+
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', linewidths=0.5)
+plt.title('Correlation Matrix of Different Crimes')
+plt.show()
+```
+
+![image](https://github.com/Arif-miad/Crimes-Against-Women-in-India-2001-2021-/blob/main/crime3.png)
+```python
+import seaborn as sns
+
+# Select top N states by total crime numbers
+top_n_states = crimes_df_cleaned.groupby('State').sum().nlargest(6, 'Rape Cases').index
+
+# Filter data for these states
+filtered_df = crimes_df_cleaned[crimes_df_cleaned['State'].isin(top_n_states)]
+
+# Create a facet grid to show trends over the years
+g = sns.FacetGrid(filtered_df, col="State", col_wrap=3, height=4)
+g.map(sns.lineplot, 'Year', 'Rape Cases')
+g.set_titles("{col_name}")
+g.set_axis_labels("Year", "Number of Rape Cases")
+plt.subplots_adjust(top=0.9)
+g.fig.suptitle('Rape Cases Trends in Top 6 States', fontsize=16)
+plt.show()
+```
+
+![image](https://github.com/Arif-miad/Crimes-Against-Women-in-India-2001-2021-/blob/main/__results___16_0.png)
+
+
+
+
